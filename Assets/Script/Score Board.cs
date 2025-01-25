@@ -10,9 +10,11 @@ namespace ScoreBoard
     {
         [Header("Show Score Board")]
         public TextMeshProUGUI scoreBoard;
+        public TextMeshProUGUI bubblePoppedBoard;
 
         public int score = 0;
-        private int highScore;
+        public int bubblePopped = 0;
+        public int highScore;
 
         private void Awake()
         {
@@ -22,6 +24,7 @@ namespace ScoreBoard
         private void Update()
         {
             scoreBoard.text = score.ToString();
+            bubblePoppedBoard.text = bubblePopped.ToString();
         }
 
         private int LoadHighScore()
@@ -39,6 +42,7 @@ namespace ScoreBoard
         public void AddScore(int playerScore)
         {
             score += playerScore;
+            bubblePopped++;
         }
     }
 

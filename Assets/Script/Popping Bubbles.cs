@@ -13,19 +13,14 @@ public class PoppingBubbles : MonoBehaviour
     {
         audioSource = GameObject.Find("Character").GetComponent<AudioSource>();
         scoreBoard = GameObject.Find("Score Board").GetComponent<ScoreBoard.ScoreBoard>();
-
-        if(scoreBoard == null)
-        {
-            Debug.Log(scoreBoard);
-            Debug.Log("score board not found!");
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            scoreBoard.AddScore(20);
+            Debug.Log(gameObject.tag);
+            scoreBoard.AddScore(Random.Range(5, 20));
             audioSource.PlayOneShot(audioSource.clip);
 
             Destroy(gameObject);

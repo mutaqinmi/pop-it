@@ -9,14 +9,6 @@ public class RandomSpawner : MonoBehaviour
     public BoxCollider arenaCollider;
     private bool isSpawning;
 
-    private void Start()
-    {
-        isSpawning = true;
-
-        StartGame();
-        StartCoroutine(BubbleRandomSpawn());
-    }
-
     private IEnumerator BubbleRandomSpawn()
     {
         while (isSpawning)
@@ -25,30 +17,28 @@ public class RandomSpawner : MonoBehaviour
 
             Instantiate(bubble, randomPosition, Quaternion.identity, bubblesParent);
 
-            yield return new WaitForSeconds(Random.Range(1, 3));
+            yield return new WaitForSeconds(Random.Range(0.1f, 1f));
         }
     }
 
-    private void StartGame()
-    {
-        for(int i = 0; i <= 10; i++)
-        {
-            Vector2 randomPosition = GetRandomPositionInArena();
-
-            Instantiate(bubble, randomPosition, Quaternion.identity, bubblesParent);
-        }
-    }
-
-    private void StopSpawning()
+    public void StopSpawning()
     {
         isSpawning = false;
     }
 
-    private void StartSpawning()
+    public void StartSpawning()
     {
         if (!isSpawning)
         {
             isSpawning = true;
+
+            for (int i = 0; i <= 10; i++)
+            {
+                Vector2 randomPosition = GetRandomPositionInArena();
+
+                Instantiate(bubble, randomPosition, Quaternion.identity, bubblesParent);
+            }
+
             StartCoroutine(BubbleRandomSpawn());
         }
     }

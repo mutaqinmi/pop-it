@@ -11,7 +11,7 @@ public class BubbleAutoPop : MonoBehaviour
 
     private IEnumerator PopBubble()
     {
-        yield return new WaitForSeconds(Random.Range(1, 5));
+        yield return new WaitForSeconds(Random.Range(5, 10));
         Destroy(gameObject);
     }
 }
