@@ -2,13 +2,14 @@ using MoreMountains.CorgiEngine;
 using MoreMountains.Tools;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
     [Header("Time Manager")]
-    private float totalTime = 30;
+    [HideInInspector] public float totalTime = 30;
     public TextMeshProUGUI countdownText;
     public GameObject gameOverOverlay;
 
@@ -20,6 +21,7 @@ public class TimeManager : MonoBehaviour
     private RandomSpawner spawner;
     private ScoreBoard.ScoreBoard scoreBoard;
     private bool gameStart;
+    private float initialTimer = 3;
 
     private void Start()
     {
@@ -50,13 +52,45 @@ public class TimeManager : MonoBehaviour
 
     public void GameStart()
     {
-        gameStart = true;
-        spawner.StartSpawning();
-
         Transform uiCamera = GameObject.Find("UI Camera").transform;
         Transform hudCanvas = uiCamera.Find("HUD Canvas");
         Transform mainHUD = hudCanvas.Find("Main HUD");
         Transform mainMenu = hudCanvas.Find("Main Menu");
+        Transform countdownBase = mainMenu.Find("Countdown Base");
+        Transform title = mainMenu.Find("Title");
+        Transform subtitle = mainMenu.Find("Subtitle");
+
+        title.gameObject.SetActive(false);
+        subtitle.gameObject.SetActive(false);
+        countdownBase.gameObject.SetActive(true);
+
+        StartCoroutine(Countdown());
+    }
+
+    private IEnumerator Countdown()
+    {
+        Transform uiCamera = GameObject.Find("UI Camera").transform;
+        Transform hudCanvas = uiCamera.Find("HUD Canvas");
+        Transform mainHUD = hudCanvas.Find("Main HUD");
+        Transform mainMenu = hudCanvas.Find("Main Menu");
+        Transform countdownBase = mainMenu.Find("Countdown Base");
+        Transform countdown = countdownBase.Find("Countdown");
+
+        while (initialTimer > 0)
+        {
+            countdown.gameObject.GetComponent<TextMeshProUGUI>().text = initialTimer.ToString();
+
+            yield return new WaitForSeconds(1);
+
+            initialTimer -= 1;
+        }
+
+        countdown.gameObject.GetComponent<TextMeshProUGUI>().text = "Go!";
+
+        yield return new WaitForSeconds(1);
+
+        gameStart = true;
+        spawner.StartSpawning();
 
         mainHUD.gameObject.SetActive(true);
         mainMenu.gameObject.SetActive(false);

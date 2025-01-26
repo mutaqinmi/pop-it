@@ -44,6 +44,11 @@ namespace ScoreBoard
             score += playerScore;
             bubblePopped++;
         }
+
+        public void RemoveScore(int playerScore)
+        {
+            score -= playerScore;
+        }
     }
 
     [System.Serializable]

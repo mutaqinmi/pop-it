@@ -9,6 +9,7 @@ TagManager:
   - Background
   - NoMask
   - ShineBubble
+  - Bomb
   layers:
   - Default
   - TransparentFX

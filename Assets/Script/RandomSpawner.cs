@@ -5,8 +5,13 @@ using UnityEngine;
 public class RandomSpawner : MonoBehaviour
 {
     public Transform bubblesParent;
+
+    [Header("Bubbles")]
     public GameObject bubble;
     public GameObject shiningBubble;
+    public GameObject bomb;
+
+    [Header("Game")]
     public BoxCollider arenaCollider;
     private bool isSpawning;
 
@@ -34,6 +39,18 @@ public class RandomSpawner : MonoBehaviour
         }
     }
 
+    private IEnumerator BombRandomSpawn()
+    {
+        while (isSpawning)
+        {
+            yield return new WaitForSeconds(Random.Range(3.0f, 5.0f));
+
+            Vector2 randomPosition = GetRandomPositionInArena();
+
+            Instantiate(bomb, randomPosition, Quaternion.identity, bubblesParent);
+        }
+    }
+
     public void StopSpawning()
     {
         isSpawning = false;
@@ -54,6 +71,7 @@ public class RandomSpawner : MonoBehaviour
 
             StartCoroutine(BubbleRandomSpawn());
             StartCoroutine(ShiningBubbleRandomSpawn());
+            StartCoroutine(BombRandomSpawn());
         }
     }
 
