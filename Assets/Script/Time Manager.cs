@@ -7,8 +7,15 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
+    [Header("Time Manager")]
     private float totalTime = 30;
     public TextMeshProUGUI countdownText;
+    public GameObject gameOverOverlay;
+
+    [Header("Game Over")]
+    public TextMeshProUGUI totalBubble;
+    public TextMeshProUGUI initialScore;
+    public TextMeshProUGUI recentHighScore;
 
     private RandomSpawner spawner;
     private ScoreBoard.ScoreBoard scoreBoard;
@@ -57,11 +64,20 @@ public class TimeManager : MonoBehaviour
 
     private void GameOver()
     {
+        Transform uiCamera = GameObject.Find("UI Camera").transform;
+        Transform hudCanvas = uiCamera.Find("HUD Canvas");
+        Transform mainHUD = hudCanvas.Find("Main HUD");
+
+        mainHUD.gameObject.SetActive(false);
+
         spawner.StopSpawning();
         totalTime = 0;
 
         LevelManager.Instance.FreezeCharacters();
         SetHighScore();
+
+        Summary();
+        gameOverOverlay.SetActive(true);
     }
 
     private void SetHighScore()
@@ -71,5 +87,12 @@ public class TimeManager : MonoBehaviour
             ScoreBoard.Score newScore = new ScoreBoard.Score(scoreBoard.score, scoreBoard.score);
             MMSaveLoadManager.Save(newScore, "userHighScore");
         }
+    }
+
+    private void Summary()
+    {
+        totalBubble.text = scoreBoard.bubblePopped.ToString();
+        initialScore.text = scoreBoard.score.ToString();
+        recentHighScore.text = scoreBoard.highScore.ToString();
     }
 }

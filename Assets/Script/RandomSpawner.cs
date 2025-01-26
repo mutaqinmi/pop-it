@@ -6,6 +6,7 @@ public class RandomSpawner : MonoBehaviour
 {
     public Transform bubblesParent;
     public GameObject bubble;
+    public GameObject shiningBubble;
     public BoxCollider arenaCollider;
     private bool isSpawning;
 
@@ -13,11 +14,23 @@ public class RandomSpawner : MonoBehaviour
     {
         while (isSpawning)
         {
+            yield return new WaitForSeconds(Random.Range(0.1f, 1f));
+
             Vector2 randomPosition = GetRandomPositionInArena();
 
             Instantiate(bubble, randomPosition, Quaternion.identity, bubblesParent);
+        }
+    }
 
-            yield return new WaitForSeconds(Random.Range(0.1f, 1f));
+    private IEnumerator ShiningBubbleRandomSpawn()
+    {
+        while (isSpawning)
+        {
+            yield return new WaitForSeconds(Random.Range(3.0f, 5.0f));
+
+            Vector2 randomPosition = GetRandomPositionInArena();
+
+            Instantiate(shiningBubble, randomPosition, Quaternion.identity, bubblesParent);
         }
     }
 
@@ -40,6 +53,7 @@ public class RandomSpawner : MonoBehaviour
             }
 
             StartCoroutine(BubbleRandomSpawn());
+            StartCoroutine(ShiningBubbleRandomSpawn());
         }
     }
 

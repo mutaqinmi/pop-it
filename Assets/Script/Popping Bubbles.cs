@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 
 public class PoppingBubbles : MonoBehaviour
 {
+    public AudioClip popClip;
     private AudioSource audioSource;
     private ScoreBoard.ScoreBoard scoreBoard;
 
@@ -19,9 +20,16 @@ public class PoppingBubbles : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log(gameObject.tag);
-            scoreBoard.AddScore(Random.Range(5, 20));
-            audioSource.PlayOneShot(audioSource.clip);
+            if(gameObject.tag == "ShineBubble")
+            {
+                scoreBoard.AddScore(Random.Range(50, 100));
+            }
+            else
+            {
+                scoreBoard.AddScore(Random.Range(5, 20));
+            }
+
+            audioSource.PlayOneShot(popClip);
 
             Destroy(gameObject);
         }
